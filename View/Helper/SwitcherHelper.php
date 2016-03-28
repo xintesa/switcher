@@ -4,6 +4,7 @@ class SwitcherHelper extends AppHelper {
 
 	public $helpers = array(
 		'Form',
+		'Theme',
 	);
 
 /**
@@ -16,6 +17,7 @@ class SwitcherHelper extends AppHelper {
 			return array();
 		}
 		$options = array();
+		$themedLayouts = $this->activeByContentType($themedLayouts);
 		foreach ($themedLayouts as $theme => $data) {
 			$layouts = array();
 			$themeLayouts = array_keys($data['layouts']);
@@ -25,6 +27,38 @@ class SwitcherHelper extends AppHelper {
 			$options[$theme] = $layouts;
 		}
 		return $options;
+	}
+
+	public function getActiveTheme() {
+		return Configure::read('Site.theme');
+	}
+
+	public function activeByContentType($layouts = array()) {
+		if (Configure::read('Switcher.ActiveByContentType')) {
+			$theme = $this->getActiveTheme();
+			$config = CroogoTheme::config($theme);
+			if (empty($config['switcher']['content-type'])) {
+				return $layoutss;
+			}
+
+			$activeTypes = $config['switcher']['content-type'];
+			$type = $this->_View->viewVars['typeAlias'];
+
+			if (!isset($activeTypes[$type])) {
+				return $layouts;
+			}
+			$values = $activeTypes[$type];
+			$filtered = array_filter($layouts[$theme]['layouts'], function ($k) use ($values) {
+				if (!in_array($k, $values)) {
+					unset($k);
+				} else {
+					return $k;
+				}
+			}, ARRAY_FILTER_USE_KEY);
+			$layouts[$theme]['layouts'] = $filtered;
+			return $layouts;
+		}
+		return array();
 	}
 
 /**
