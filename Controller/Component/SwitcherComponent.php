@@ -29,6 +29,12 @@ class SwitcherComponent extends Component {
 	public function getThemeLayouts() {
 		$themes = $this->Croogo->getThemes();
 		$available = array();
+
+		/* Get only active Theme & filter it by Content Type */
+		if (Configure::read('Switcher.filterByContentType')) {
+			$themes = [Configure::read('Site.theme')];
+		}
+
 		foreach ($themes as $theme) {
 			if ($theme == 'default') { continue; }
 			$path = App::themePath($theme);

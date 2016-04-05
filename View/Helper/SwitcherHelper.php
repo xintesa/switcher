@@ -4,6 +4,7 @@ class SwitcherHelper extends AppHelper {
 
 	public $helpers = array(
 		'Form',
+		'Theme',
 	);
 
 /**
@@ -16,6 +17,7 @@ class SwitcherHelper extends AppHelper {
 			return array();
 		}
 		$options = array();
+		$themedLayouts = $this->activeByContentType($themedLayouts);
 		foreach ($themedLayouts as $theme => $data) {
 			$layouts = array();
 			$themeLayouts = array_keys($data['layouts']);
@@ -25,6 +27,34 @@ class SwitcherHelper extends AppHelper {
 			$options[$theme] = $layouts;
 		}
 		return $options;
+	}
+
+	public function getActiveTheme() {
+		return Configure::read('Site.theme');
+	}
+
+	public function activeByContentType($layouts = array()) {
+		if (Configure::read('Switcher.filterByContentType')) {
+			$theme = $this->getActiveTheme();
+			$config = Configure::read('Switcher.contentTypes');
+			if (empty($config)) {
+				return $layouts;
+			}
+
+			$type = $this->_View->viewVars['typeAlias'];
+
+			if (!isset($config[$type])) {
+				return $layouts;
+			}
+			$validTypes = array_flip($config[$type]);
+			$filtered = array_intersect_key(
+				$layouts[$theme]['layouts'], $validTypes
+			);
+
+			$layouts[$theme]['layouts'] = $filtered;
+			return $layouts;
+		}
+		return array();
 	}
 
 /**
