@@ -15,10 +15,32 @@ Configuration
 
 3. Use the Switcher -> Paths menu to configure theme/layouts based on url path
 
+Layout Restriction By Content Type
+----------------------------------
+
+You can limit layouts for use based on Content Type. To enable this feature,
+you will need run following during your app bootstrap cycle:
+
+	```php
+	Configure::write('Switcher', array(
+		'filterByContentType' => true,
+		'contentTypes' => array(
+			'page' => array(
+				'default',
+				'full',
+			),
+			'blog' => array(
+				'default',
+				'blog-sidebar',
+			),
+		),
+	));
+	```
+
 Requirements
 ------------
 
-Croogo 1.4 - http://croogo.org/
+Croogo >= 2.2 - http://croogo.org/
 
 Good luck and have fun.
 
