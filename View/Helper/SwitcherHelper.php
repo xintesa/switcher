@@ -46,14 +46,11 @@ class SwitcherHelper extends AppHelper {
 			if (!isset($config[$type])) {
 				return $layouts;
 			}
-			$values = $activeTypes[$type];
-			$filtered = array_filter($layouts[$theme]['layouts'], function ($k) use ($values) {
-				if (!in_array($k, $values)) {
-					unset($k);
-				} else {
-					return $k;
-				}
-			}, ARRAY_FILTER_USE_KEY);
+			$validTypes = array_flip($config[$type]);
+			$filtered = array_intersect_key(
+				$layouts[$theme]['layouts'], $validTypes
+			);
+
 			$layouts[$theme]['layouts'] = $filtered;
 			return $layouts;
 		}
