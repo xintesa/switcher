@@ -34,7 +34,7 @@ class SwitcherHelper extends AppHelper {
 	}
 
 	public function activeByContentType($layouts = array()) {
-		if (Configure::read('Switcher.ActiveByContentType')) {
+		if (Configure::read('Switcher.filterByContentType')) {
 			$theme = $this->getActiveTheme();
 			$config = CroogoTheme::config($theme);
 			if (empty($config['switcher']['content-type'])) {

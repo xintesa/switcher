@@ -31,7 +31,7 @@ class SwitcherComponent extends Component {
 		$available = array();
 
 		/* Get only active Theme & filter it by Content Type */
-		if (Configure::read('Switcher.ActiveByContentType')) {
+		if (Configure::read('Switcher.filterByContentType')) {
 			$themes = [Configure::read('Site.theme')];
 		}
 
