@@ -47,7 +47,12 @@ class SwitcherComponent extends Component {
 	public function getPaths() {
 		$settings = array();
 		$Path = ClassRegistry::init('Switcher.SwitcherPath');
-		$paths = $Path->find('all');
+		$paths = $Path->find('all', array(
+			'cache' => array(
+				'name' => 'all_paths',
+				'config' => 'nodes',
+			),
+		));
 		for ($i = 0, $ii = count($paths); $i < $ii; $i++) {
 			$path = $paths[$i]['SwitcherPath'];
 			$settings[$path['path']] = array(

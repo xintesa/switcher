@@ -1,6 +1,8 @@
 <?php
 
-class SwitcherAppModel extends AppModel {
+App::uses('CroogoAppModel', 'Croogo.Model');
+
+class SwitcherAppModel extends CroogoAppModel {
 
 }
 
